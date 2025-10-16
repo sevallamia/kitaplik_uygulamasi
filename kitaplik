@@ -1,0 +1,71 @@
+import os
+
+BOOKS_FILE = "books.txt"
+
+def menu():
+    print("\n=== Kitaplık Uygulaması ===")
+    print("1. Kitap Ekle")
+    print("2. Kitapları Listele")
+    print("3. Kitap Ara")
+    print("4. Çıkış")
+
+def kitap_ekle():
+    ad = input("Kitap adı: ").strip()
+    yazar = input("Yazar adı: ").strip()
+    yil = input("Basım yılı: ").strip()
+    
+    with open(BOOKS_FILE, "a", encoding="utf-8") as f:
+        f.write(f"{ad} | {yazar} | {yil}\n")
+    
+    print("Kitap başarıyla eklendi.")
+
+def kitaplari_listele():
+    if not os.path.exists(BOOKS_FILE):
+        print("Henüz hiç kitap eklenmemiş.")
+        return
+    
+    with open(BOOKS_FILE, "r", encoding="utf-8") as f:
+        kitaplar = f.readlines()
+    
+    if not kitaplar:
+        print("Kitap listesi boş.")
+        return
+
+    print("\n--- Kitaplar ---")
+    for i, kitap in enumerate(kitaplar, 1):
+        print(f"{i}. {kitap.strip()}")
+
+def kitap_ara():
+    anahtar = input("Aranacak kelime (kitap adı/yazar): ").strip().lower()
+
+    with open(BOOKS_FILE, "r", encoding="utf-8") as f:
+        kitaplar = f.readlines()
+    
+    sonuc = [k for k in kitaplar if anahtar in k.lower()]
+    
+    if sonuc:
+        print("\n--- Arama Sonuçları ---")
+        for i, kitap in enumerate(sonuc, 1):
+            print(f"{i}. {kitap.strip()}")
+    else:
+        print("Eşleşen kitap bulunamadı.")
+
+def main():
+    while True:
+        menu()
+        secim = input("Seçiminizi yapınız (1-4): ")
+        
+        if secim == "1":
+            kitap_ekle()
+        elif secim == "2":
+            kitaplari_listele()
+        elif secim == "3":
+            kitap_ara()
+        elif secim == "4":
+            print("Çıkılıyor...")
+            break
+        else:
+            print("Geçersiz seçim. Lütfen tekrar deneyin.")
+
+if __name__ == "__main__":
+    main()
