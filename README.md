@@ -1,1 +1,0 @@
-# kitaplik_uygulamasi
